@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Handlee&family=Lobster&display=swap');
+
+section
+{
+    padding-top: 30px;
+    padding-bottom: 100px; 
+}
+.carousel-control-prev-icon
+{
+    background-image: url(/images/left-arrow.svg);
+}
+.carousel-control-next-icon
+{
+    background-image: url(/images/right-arrow.svg);
+}
+.carousel-control-next, .carousel-control-prev
+{
+    width: 25px;
+}
+.carousel-control-next
+{
+    right: -35px;
+}
+.carousel-control-prev
+{
+    left: -35px;
+}
+.my-header-c 
+{
+    line-height: 1;
+    border-bottom: 2px solid #e5e5e5;
+}
+.my-header 
+{
+    text-decoration: none;
+    font-family: 'Lobster', cursive;
+    font-size: 2.25rem;
+}
+.my-header:hover 
+{
+    text-decoration: none;
+}
+
+body {
+    background: rgb(109, 44, 1); /* Цвет фона */
+    color: rgb(255, 255, 255); /* Цвет текста */
+}
+a {
+    color:#ffffff;
+    text-decoration:none
+    }
+    
+    a:active {
+    color:#000000;
+    text-decoration:none
+    }
+    
+    a:visited {
+    color:#ffffff;
+    text-decoration:none
+    }
+    
+    a:hover {
+    color:#000000;
+    text-decoration: underline
+    } 
+
+    .btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
+        color: #000000;
+        background-color: #ffffff;
+        border-color: #000000;
+    }
+    .btn-outline-primary, .btn-outline-primary:hover {
+        color: #ffffff;
+        border-color: #ffffff;
+    }
+    .btn-primary, .btn-primary:hover, .btn-primary:active
+    {
+        color: #fff;
+        background-color: rgb(109, 44, 1);
+        border-color: rgb(109, 44, 1);
+    }
+
+    .block a
+    {
+        color: rgb(204, 204, 204);
+        font-size: 1.3rem;
+    }
+
+
+   
+
+  
+
+
+  
+ 
+  
+
