@@ -1,20 +1,19 @@
 <?php
   ini_set("display_errors", 0);
-  include 'func.php';
   session_start();
   if($_GET['do'] == 'logout'){
     unset($_SESSION['login']);
   }
 ?>
-
 <?php
-/*if(isset($_POST['enter3']))
+if(isset($_POST['enter']))
 {
-    $_SESSION['menu'] = 'Сэндвичи';
+    $_SESSION['search'] = $_POST['text'];
     header("Location: #");
     exit;
-}*/
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,13 +41,13 @@
           <a class="my-header" href="product.php">Продукты</a>
         </div>
         <div class="col-3 col text-center">
-          <a class="my-header" href="#" style="color: #000000">Блюда</a>
+          <a class="my-header" href="blud.php" >Блюда</a>
         </div>
         <div class="col-1 col text-center">
           <a class="my-header" href="index.php" style="color: #ffffff">БуДь СыТ</a>
         </div>
         <div class="col-3 col text-center">
-          <a class="my-header" href="search.php">Поиск</a>
+          <a class="my-header" href="#" style="color: #000000">Поиск</a>
         </div>
         <div class="col-2 col text-center">
           <a class="my-header" href="kor.php">Корзина</a>
@@ -69,73 +68,61 @@
 
   <section>
     <div class="container-xxl">
-      <?php create_head('Блюда'); ?>
-    </div>
+      <div class="row">
+        <div class="col-6">
+          <h1>Поиск</h1>
+        </div>
+      </div>
+      <form method= "POST">
+        <div class="row g-2">
+          <div class="col-3">
+            <input type="text" name="text" class="form-control btn-outline-dark" id="exampleFormControlInput1" placeholder="Поиск продукции по названиям" required />
+          </div>
+          <div class="col-auto">
+            <input type = "submit" class="btn btn-dark mb-3" name = "enter" value="Поиск" />
+          </div>
+        </div>
+      </form>
+<?php $mysqli = @new mysqli('localhost', 'root', '', 'mysite');
+      $query = $mysqli->query("SELECT id_prod FROM products WHERE Sname LIKE '%$_SESSION[search]%'");
+      $row = $query->fetch_assoc();
+      if($row == NULL AND $_SESSION['search']) {echo 'Указанного товара нет в наличии';}
+?>  </div>
   </section>
 
   <section>
-    <div class="container-xxl">
-      <h2><?php echo $_SESSION['menu']; ?></h2>
-      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner" style="color: #000000">
-        <?php     
-          $mysqli = @new mysqli('localhost', 'root', '', 'mysite');
-          $query = $mysqli->query("SELECT id_prod FROM products WHERE prod_type = '$_SESSION[menu]'");
-          $num_id = 0;
-          while($row = $query->fetch_assoc())
-          {
-            $num_id++;
-          } 
-          $res = $mysqli->query("SELECT * FROM products WHERE prod_type = '$_SESSION[menu]' ORDER BY Sprice");
-          $num1 = 1;
-          $num2 = 1;
-          while($num2 <= $num_id)
-          {
-            if($num2 == 1)
+  <div class="container-xxl">
+    <h2>Результаты поиска:</h2>
+      <?php     
+        $res = $mysqli->query("SELECT * FROM products WHERE Sname LIKE '%$_SESSION[search]%' ORDER BY Sprice");
+?>      <div class="row">  
+<?php       if($_SESSION[search])  
             {
-?>            <div class="carousel-item active">
-              <div class="row justify-content-between"> 
-<?php       }
-            else
-            {
-?>            <div class="carousel-item">
-              <div class="row justify-content-between"> 
-<?php       }
-                while($num2 - $num1 < 4 AND $num2 <= $num_id)
-                {
-                  $row = mysqli_fetch_assoc($res);
-                  $show_name = $row['Sname'];
-                  $show_price = $row['Sprice'];
-                  $show_desc = $row['Sdescription'];
-                  $show_img = base64_encode($row['Image']);
-?>
-                  <div class="col">
-                    <div class="card w-100">
-                      <img src = "data:image/jpeg;base64, <?php echo $show_img ?>" class="card-img-top" alt = "" width="300px" height="300px">
-                      <div class="card-body">
-                        <h5 class="card-title"><?php echo $show_name ?></h5>
-                        <p class="card-text"> <?php echo $show_desc ?> </p>
-                        <button type="button" class="btn btn-dark"><?php echo'+'; echo $show_price; echo'р.'; ?></button>
-                      </div>
+              while($row = $res->fetch_assoc())
+              {
+                $show_name_stock = $row['Sname'];
+                $show_name_low = mb_strtolower($show_name_stock);
+                $search = mb_strtolower($_SESSION['search']);
+                $show_name = str_ireplace($search,'<b><span class="found" style="color: rgb(77, 109, 255);">'.$search.'</span></b>', $show_name_low);
+                $show_price = $row['Sprice'];
+                $show_desc = $row['Sdescription'];
+                $show_img = base64_encode($row['Image']);
+?>              <div class="col col-3">
+                  <div class="card w-100">
+                    <img src = "data:image/jpeg;base64, <?php echo $show_img ?>" class="card-img-top" alt = ""  width="300px" height="300px">
+                    <div class="card-body">
+                    <h5 class="card-title" style = "color: #000000"><?php echo $show_name ?></h5>
+                    <p class="card-text" style = "color: #000000"> <?php echo $show_desc ?> </p>
+                      <button type="button" class="btn btn-dark"><?php echo'+'; echo $show_price; echo'р.'; ?></button>
                     </div>
                   </div>
-<?php             $num2++;
-                  }
-                $num1 = $num2;
-?>            </div>
-            </div>
-<?php     }$mysqli->close();
-?>      </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </a>
+                </div>
+<?php           }
+              }
+              unset($_SESSION['search']);
+?>         </div>   
+        </div>
       </div>
-    </div>
   </section>
 
   <section>

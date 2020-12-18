@@ -1,9 +1,9 @@
 <?php
   ini_set("display_errors", 0);
+  include 'func.php';
   session_start();
   if($_GET['do'] == 'logout'){
     unset($_SESSION['login']);
-    session_destroy();
   }
 ?>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
     <div class="container-xxl">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-2 col text-center">
-          <a class="my-header" href="index.php">Акции</a>
+          <a class="my-header" href="#" style="color: #000000">Продукты</a>
         </div>
         <div class="col-3 col text-center">
           <a class="my-header" href="blud.php">Блюда</a>
@@ -39,7 +39,7 @@
           <a class="my-header" href="index.php" style="color: #ffffff">БуДь СыТ</a>
         </div>
         <div class="col-3 col text-center">
-          <a class="my-header" href="#" style="color: #000000">Продукты</a>
+          <a class="my-header" href="search.php">Поиск</a>
         </div>
         <div class="col-2 col text-center">
           <a class="my-header" href="kor.php">Корзина</a>
@@ -59,118 +59,63 @@
 
   <section>
     <div class="container-xxl">
-      <div class="row">
-        <div class="col">
-          <h1>Продукты</h1>
-        </div>
-        <div class="container-xxl">
-          <div class="btn-group btn-group-lg" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btnradio1">Овощи и фрукты</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio2">Напитки</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3">Скоро</label>
-          </div>
-        </div>
+      <?php $show_type = create_head('Продукты') ?>
+    </div>
   </section>
 
   <section>
     <div class="container-xxl">
-      <h2>Овощи и фрукты</h2>
+    <h2><?php echo $_SESSION['menu']; ?></h2>
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" style="color: #000000">
-          <div class="carousel-item active">
-            <div class="row justify-content-between">
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/pom.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Помидор</h5>
-                    <p class="card-text"> </p>
-                    <a href="#" class="btn btn-primary">+36р.</a>
+        <?php     
+          $mysqli = @new mysqli('localhost', 'root', '', 'mysite');
+          $query = $mysqli->query("SELECT id_prod FROM products WHERE prod_type = '$_SESSION[menu]'");
+          $num_id = 0;
+          while($row = $query->fetch_assoc())
+          {
+            $num_id++;
+          } 
+          $res = $mysqli->query("SELECT * FROM products WHERE prod_type = '$_SESSION[menu]' ORDER BY Sprice");
+          $num1 = 1;
+          $num2 = 1;
+          while($num2 <= $num_id)
+          {
+            if($num2 == 1)
+            {
+?>            <div class="carousel-item active">
+              <div class="row justify-content-between"> 
+<?php       }
+            else
+            {
+?>            <div class="carousel-item">
+              <div class="row justify-content-between"> 
+<?php       }
+                while($num2 - $num1 < 4 AND $num2 <= $num_id)
+                {
+                  $row = mysqli_fetch_assoc($res);
+                  $show_name = $row['Sname'];
+                  $show_price = $row['Sprice'];
+                  $show_desc = $row['Sdescription'];
+                  $show_img = base64_encode($row['Image']);
+?>
+                  <div class="col">
+                    <div class="card w-100">
+                      <img src = "data:image/jpeg;base64, <?php echo $show_img ?>" class="card-img-top" alt = "" width="300px" height="300px">
+                      <div class="card-body">
+                        <h5 class="card-title"><?php echo $show_name ?></h5>
+                        <p class="card-text"> <?php echo $show_desc ?> </p>
+                        <button type="button" class="btn btn-dark"><?php echo'+'; echo $show_price; echo'р.'; ?></button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/ba.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Баклажан</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">+60р.</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/og.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Огурец</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">+40р.</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/mork.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Морковь</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">+40р.</a>
-                  </div>
-                </div>
-              </div>
+<?php             $num2++;
+                  }
+                $num1 = $num2;
+?>            </div>
             </div>
-          </div>
-          <div class="carousel-item">
-            <div class="row justify-content-between">
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/ya.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Яблоко</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">20р.</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/Duras_grape.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Виноград</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">+45р.</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/gr.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Груша</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">+30р.</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card w-100">
-                  <img src="images/pe.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">Персик</h5>
-                    <p class="card-text"></p>
-                    <a href="#" class="btn btn-primary">+60р.</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<?php     }$mysqli->close();
+?>      </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
@@ -195,8 +140,15 @@
             <h2>Контакты</h2>
           </div>
           <div class="col text-center"><a href="#">Новости</a></div>
-          <div class="col text-center"><a href="#"></a></div>
-          <div class="col text-center"><a href="Contacts.html">Обратная связь</a></div>
+          <div class="col text-center"><a href="admin.php">
+<?php
+          if($_SESSION['login']['privileges'] < 8){ }
+          else
+          {
+            echo 'Администрирование';
+          }
+?></a></div>
+          <div class="col text-center"><a href="contacts.php">Обратная связь</a></div>
           <div class="col text-center"><a href="#">Вакансии</a></div>
           <div class="col text-center"><a href="#"></a></div>
           <div class="col text-center"><a href="#">Столовые в городе</a></div>

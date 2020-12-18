@@ -1,0 +1,84 @@
+<script>
+    function validate_upload_prod()
+    {
+        var p_type = document.getElementById("p_type");
+        var name = document.getElementById("name");
+        var price = document.getElementById("price");
+        var img_upload = document.getElementById("img_upload");
+        if(!img_upload.value)
+        {
+            event.preventDefault();
+            img_upload.style.border = "0.2pc solid gray";
+            return false;
+        }
+        if(!p_type.value)
+        {
+            event.preventDefault();
+            p_type.style.border = "0.2pc solid gray";
+            return false;
+        }
+        if(!name.value)
+        {
+            event.preventDefault();
+            name.style.border = "0.2pc solid gray";
+            return false;
+        }
+        if(!price.value)
+        {
+            event.preventDefault();
+            price.style.border = "0.2pc solid gray";
+            return false;
+        }
+
+        return true;
+    }
+    function validate_upload_cat()
+    {
+        var p_type = document.getElementById("p_type_cat");
+        var name = document.getElementById("category");
+        if(!c_type.value)
+        {
+            event.preventDefault();
+            p_type.style.border = "0.2pc solid gray";
+            return false;
+        }
+        if(!name.value)
+        {
+            event.preventDefault();
+            name.style.border = "0.2pc solid gray";
+            return false;
+        }
+        return true;
+    }
+    function validate_edit_prod()
+    {
+        var name = document.getElementById("name");
+        var price = document.getElementById("price");
+        if(!name.value)
+        {
+            event.preventDefault();
+            name.style.border = "0.2pc solid gray";
+            return false;
+        }
+        if(!price.value)
+        {
+            event.preventDefault();
+            price.style.border = "0.2pc solid gray";
+            return false;
+        }
+
+        return true;
+    }
+    function validate_edit_cat()
+    {
+        var p_type = document.getElementById("p_type_cat");
+        if(!name.value)
+        {
+            event.preventDefault();
+            p_type.style.border = "0.2pc solid gray";
+            return false;
+        }
+
+        return true;
+    }
+</script>  

@@ -1,12 +1,11 @@
 <?php
   ini_set("display_errors", 0);
   session_start();
-  if($_GET['do'] == 'logout'){
+  if($_GET['do'] == 'logout')
+  {
     unset($_SESSION['login']);
-    session_destroy();
   }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +31,7 @@
     <div class="container-xxl">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-2 col text-center">
-          <a class="my-header" href="#" style="color: #000000">Акции</a>
+        <a class="my-header" href="product.php">Продукты</a>
         </div>
         <div class="col-3 col text-center">
           <a class="my-header" href="blud.php">Блюда</a>
@@ -41,7 +40,7 @@
           <a class="my-header" href="index.php" style="color: #ffffff">БуДь СыТ</a>
         </div>
         <div class="col-3 col text-center">
-          <a class="my-header" href="product.php">Продукты</a>
+          <a class="my-header" href="search.php">Поиск</a>
         </div>
         <div class="col-2 col text-center">
           <a class="my-header" href="kor.php">Корзина</a>
@@ -59,11 +58,11 @@
     </div>
   </header>
 
-    <section>
+  <section>
     <div class="container-xxl">
       <div class="row">
         <div class="col-6">
-          <h1>Акции</h1>
+          <h1>Главная</h1>
         </div>
         <div class="col-6 col text-right">
           <h4>
@@ -74,23 +73,18 @@
             if (mysqli_connect_errno()) {
               echo "Подключение невозможно: ".mysqli_connect_error();
             }
-            $login = $_SESSION['login'];
+            $login = $_SESSION['login']['login'];
             $res = $mysqli->query("SELECT * FROM `welcome` WHERE `Slogin` = '$login'");
             $row = mysqli_fetch_assoc($res);
             echo $row['Swelcom']; echo', '; echo $row['Sname']; echo '!';
-            if ($mysqli->errno) {
-              die('Select Error (' . $mysqli->errno . ') ' . $mysqli->error);
-              }
             $mysqli->close();
           }
           ?>
           </h4>
         </div>
       </div>
-    </div>
-
   </section>
-
+  
   <section>
     <div class="container-xxl">
       <div class="row row-cols-3">
@@ -110,7 +104,7 @@
                   <div class="card-body">
                     <h5 class="card-title " style="color: #000000">Скидка 50% на овощи</h5>
                     <p class="card-text" style="color: #000000"></p>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+                    <a href="#" class="btn btn-dark">Подробнее</a>
                   </div>
                 </div>
               </div>
@@ -120,7 +114,7 @@
                   <div class="card-body">
                     <h5 class="card-title" style="color: #000000">Скидка 20% на все бургеры в честь праздника</h5>
                     <p class="card-text" style="color: #000000"> </p>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+                    <a href="#" class="btn btn-dark">Подробнее</a>
                   </div>
                 </div>
               </div>
@@ -145,7 +139,7 @@
                   <div class="card-body">
                     <h5 class="card-title" style="color: #000000">2 чизбургера с курицей по цене 1 в прилложении</h5>
                     <p class="card-text" style="color: #000000"> </p>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+                    <a href="#" class="btn btn-dark">Подробнее</a>
                   </div>
                 </div>
               </div>
@@ -155,7 +149,7 @@
                   <div class="card-body">
                     <h5 class="card-title" style="color: #000000">2 бургера от шефа за 259 по купону 5050</h5>
                     <p class="card-text" style="color: #000000"> </p>
-                    <a href="#" class="btn btn-primary">Подробнее</a>
+                    <a href="#" class="btn btn-dark">Подробнее</a>
                   </div>
                 </div>
               </div>
@@ -186,8 +180,15 @@
             <h2>Контакты</h2>
           </div>
           <div class="col text-center"><a href="#">Новости</a></div>
-          <div class="col text-center"><a href="#"></a></div>
-          <div class="col text-center"><a href="Contacts.html">Обратная связь</a></div>
+          <div class="col text-center"><a href="admin.php">
+<?php
+          if($_SESSION['login']['privileges'] < 8){ }
+          else
+          {
+            echo 'Администрирование';
+          }
+?></a></div>
+          <div class="col text-center"><a href="contacts.php">Обратная связь</a></div>
           <div class="col text-center"><a href="#">Вакансии</a></div>
           <div class="col text-center"><a href="#"></a></div>
           <div class="col text-center"><a href="#">Столовые в городе</a></div>

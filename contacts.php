@@ -3,7 +3,6 @@
   session_start();
   if($_GET['do'] == 'logout'){
     unset($_SESSION['login']);
-    session_destroy();
   }
 ?>
 <!DOCTYPE html>
@@ -31,7 +30,7 @@
         <div class="container-xxl">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-2 col text-center">
-                    <a class="my-header" href="index.php">Акции</a>
+                    <a class="my-header" href="product.php">Продукты</a>
                 </div>
                 <div class="col-3 col text-center">
                     <a class="my-header" href="blud.php">Блюда</a>
@@ -40,7 +39,7 @@
                     <a class="my-header" href="index.php" style="color: #ffffff">БуДь СыТ</a>
                 </div>
                 <div class="col-3 col text-center">
-                    <a class="my-header" href="product.php">Продукты</a>
+                    <a class="my-header" href="search.php">Поиск</a>
                 </div>
                 <div class="col-2 col text-center">
                     <a class="my-header" href="kor.php">Корзина</a>
@@ -62,7 +61,7 @@
         <div class="container-xxl">
             <div class="row">
                 <div class="col-sm-4">
-                    <h2>Номера телефона:<h2>
+                    <h2>Номер телефона:<h2>
                 </div>
                 <div class="col-sm-8">
                     <h5></h5>
@@ -74,14 +73,6 @@
                 </div>
                 <div class="col-sm-8">
                     <h5>+7(917)838-04-71</h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <h5> <h5>
-                </div>
-                <div class="col-sm-8">
-                    <h5></h5>
                 </div>
             </div>
         </div>
@@ -105,14 +96,6 @@
                     <h5>qwer2888@mail.ru</h5>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <h5> <h5>
-                </div>
-                <div class="col-sm-8">
-                    <h5></h5>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -128,7 +111,14 @@
                         <h2>Контакты</h2>
                     </div>
                     <div class="col text-center"><a href="#">Новости</a></div>
-                    <div class="col text-center"><a href="#"></a></div>
+                    <div class="col text-center"><a href="admin.php">
+<?php
+          if($_SESSION['login']['privileges'] < 8){ }
+          else
+          {
+            echo 'Администрирование';
+          }
+?></a></div>
                     <div class="col text-center"><a href="#" style="color: #000000">Обратная связь</a></div>
                     <div class="col text-center"><a href="#">Вакансии</a></div>
                     <div class="col text-center"><a href="#"></a></div>
